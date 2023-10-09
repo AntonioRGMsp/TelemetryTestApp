@@ -1,0 +1,30 @@
+unit TelemetryDBConn;
+
+interface
+uses ConnectionDB;
+type
+  TTelemetryDBConn = class(TInterfacedObject, IConnectionDB)
+    private
+    public
+      procedure Connect;
+      procedure Close;
+      function GetInstance : IConnectionDB;
+  end;
+
+implementation
+  procedure TTelemetryDBConn.Connect;
+  begin
+
+  end;
+
+  procedure TTelemetryDBConn.Close;
+  begin
+
+  end;
+
+  function TTelemetryDBConn.GetInstance: IConnectionDB;
+  begin
+
+  end;
+
+end.

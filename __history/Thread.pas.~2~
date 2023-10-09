@@ -1,0 +1,30 @@
+unit Thread;
+
+interface
+uses Row;
+
+type
+  TThread = class (TInterfacedObject, IRow)
+    private
+      FStatus : string;
+      FDate : TDate;
+      procedure SetStatus(AStatus : String);
+      procedure SetDate(ADate : TDate);
+
+    public
+      property status : string read FStatus write SetStatus;
+      property date : TDate read FDate write SetDate;
+
+  end;
+
+implementation
+  procedure TThread.SetStatus(AStatus: string);
+  begin
+    FStatus := AStatus;
+  end;
+
+  procedure TThread.SetDate(ADate: TDate);
+  begin
+    FDate := ADate;
+  end;
+end.

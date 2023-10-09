@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/09/29 15:25:25.000.189,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\Unit1.pas</Transaction>
+    <Transaction>2023/09/29 15:26:34.000.637,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\Unit1.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit1.pas</Transaction>
+    <Transaction>2023/09/29 15:26:34.000.637,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\Unit1.dfm=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit1.dfm</Transaction>
+    <Transaction>2023/09/29 15:26:40.000.746,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\Project1.dproj=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Project1.dproj</Transaction>
+    <Transaction>2023/09/29 16:36:28.000.088,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas</Transaction>
+    <Transaction>2023/09/29 16:36:38.000.000,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\ConnectionDB.pas</Transaction>
+    <Transaction>2023/09/29 16:39:15.000.777,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas</Transaction>
+    <Transaction>2023/09/29 16:39:23.000.797,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\TelemetryDBConn.pas</Transaction>
+    <Transaction>2023/10/02 16:33:34.634,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas</Transaction>
+    <Transaction>2023/10/02 16:48:42.013,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
+    <Transaction>2023/10/02 16:48:57.864,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Table.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
+    <Transaction>2023/10/02 16:49:03.474,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
+    <Transaction>2023/10/02 16:49:09.707,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Row.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
+    <Transaction>2023/10/02 16:52:34.502,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
+    <Transaction>2023/10/02 16:52:40.988,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\ThreadTable.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
+    <Transaction>2023/10/02 16:55:10.019,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
+    <Transaction>2023/10/02 16:55:14.003,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Thread.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
+  </Transactions>
+</BorlandProject>

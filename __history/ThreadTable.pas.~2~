@@ -1,0 +1,20 @@
+unit ThreadTable;
+
+interface
+uses Row, Table;
+
+type
+  TThreadTable = class (TInterfacedObject, ITable)
+    private
+      procedure UPDATE(ARow: IRow);
+    public
+
+  end;
+
+
+implementation
+procedure TThreadTable.UPDATE(ARow: IRow);
+begin
+
+end;
+end.

@@ -1,0 +1,158 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'App1'
+  ClientHeight = 196
+  ClientWidth = 579
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object txtTitle: TStaticText
+    Left = 182
+    Top = 8
+    Width = 214
+    Height = 37
+    Caption = 'Test Lock Firebird'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -27
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+  end
+  object grpControl: TGroupBox
+    Left = 242
+    Top = 51
+    Width = 329
+    Height = 137
+    Caption = 'Control'
+    TabOrder = 1
+    object btnUpdate: TBitBtn
+      Left = 240
+      Top = 87
+      Width = 75
+      Height = 25
+      Caption = 'Update'
+      TabOrder = 0
+      OnClick = btnUpdateClick
+    end
+    object btnRun: TBitBtn
+      Left = 135
+      Top = 87
+      Width = 75
+      Height = 25
+      Caption = 'Run'
+      TabOrder = 1
+      OnClick = btnRunClick
+    end
+    object clndrpckrCalendar: TCalendarPicker
+      Left = 14
+      Top = 32
+      Height = 32
+      CalendarHeaderInfo.DaysOfWeekFont.Charset = DEFAULT_CHARSET
+      CalendarHeaderInfo.DaysOfWeekFont.Color = clWindowText
+      CalendarHeaderInfo.DaysOfWeekFont.Height = -13
+      CalendarHeaderInfo.DaysOfWeekFont.Name = 'Segoe UI'
+      CalendarHeaderInfo.DaysOfWeekFont.Style = []
+      CalendarHeaderInfo.Font.Charset = DEFAULT_CHARSET
+      CalendarHeaderInfo.Font.Color = clWindowText
+      CalendarHeaderInfo.Font.Height = -20
+      CalendarHeaderInfo.Font.Name = 'Segoe UI'
+      CalendarHeaderInfo.Font.Style = []
+      Color = clWindow
+      Date = 45201.000000000000000000
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGray
+      Font.Height = -16
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      IsEmpty = False
+      ParentFont = False
+      TabOrder = 2
+    end
+    object cbbStatus: TComboBox
+      Left = 184
+      Top = 32
+      Width = 129
+      Height = 21
+      TabOrder = 3
+      Text = 'pendiente'
+      Items.Strings = (
+        'pendiente'
+        'finalizado')
+    end
+    object btnRefresh: TBitBtn
+      Left = 128
+      Top = 160
+      Width = 75
+      Height = 25
+      Caption = 'Refresh'
+      TabOrder = 4
+      OnClick = btnRefreshClick
+    end
+    object btnStop: TBitBtn
+      Left = 30
+      Top = 88
+      Width = 75
+      Height = 25
+      Caption = 'Stop'
+      TabOrder = 5
+      OnClick = btnStopClick
+    end
+  end
+  object dbgrd1: TDBGrid
+    Left = 8
+    Top = 51
+    Width = 228
+    Height = 90
+    DataSource = ds1
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+  object connTelemetry: TFDConnection
+    Params.Strings = (
+      'Database=C:\data\TELEMETRY.FDB'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'Port=3050'
+      'CharacterSet=ISO8859_3'
+      'DriverID=FB')
+    Connected = True
+    Left = 416
+  end
+  object fdqryRegister: TFDQuery
+    Connection = connTelemetry
+    SQL.Strings = (
+      '')
+    Left = 464
+  end
+  object ds1: TDataSource
+    DataSet = fdqryGetThread
+    Left = 528
+    Top = 8
+  end
+  object fdqryGetThread: TFDQuery
+    Active = True
+    Connection = connTelemetry
+    SQL.Strings = (
+      'SELECT * FROM THREAD;')
+    Left = 16
+  end
+  object fdqryChangeStatus: TFDQuery
+    Connection = connTelemetry
+    Left = 72
+  end
+end
