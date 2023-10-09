@@ -17,12 +17,10 @@ type
 
     public
       constructor Create(AStatus: string; ADate: TDate);
-      property id : Integer read FId;
-      property nombre : String read FNombre;
-      property tipo : String read FTipo;
-      property padreId : Integer read FPadreId;
-      property fecha : TDate read FFecha write SetFecha;
       property status : string read FStatus write SetStatus;
+      property fecha : TDate read FFecha write SetFecha;
+      property nombre : String read FNombre;
+
   end;
 
 implementation

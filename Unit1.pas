@@ -98,7 +98,7 @@ begin
     //FThreadTable.UPDATE(LThread);
 //    fdqryRegister.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
 //    fdqryRegister.ParamByName('STATUS').AsString := cbbStatus.Text;
-//    clndrpckrCalendar.DateFormat := 'dd/MM/yyyy';
+//    clndrpckrCalendar.DateFormat := 'yyyy-MM-dd';
 //    fdqryRegister.ParamByName('FECHA').AsDate := clndrpckrCalendar.Date;
 //    fdqryRegister.ExecSQL;
   finally

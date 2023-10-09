@@ -18,6 +18,7 @@ type
       constructor Create();
       procedure UPDATE(ARow: TThread);
       function SELECT_BY_NAME(AName : String) : TThread;
+      procedure INSERT(AThread : TThread);
   end;
 
 
@@ -37,16 +38,33 @@ procedure TThreadTable.UPDATE(ARow: TThread);
 begin
   FQueryEditor.SQL.Text := 'UPDATE REGISTRY SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
   FQueryEditor.ParamByName('STATUS').ASString := ARow.status;
-  FQueryEditor.ParamByName('FECHA').AsDate := ARow.date;
+  FQueryEditor.ParamByName('FECHA').AsDate := ARow.fecha;
   FQueryEditor.ExecSQL;
+end;
+
+procedure TThreadTable.INSERT(AThread: TThread);
+var
+  LQuery : string;
+begin
+  LQuery := 'INSERT INTO REGISTRY (id, nombre, tipo, padre_id, fecha, status)';
+  LQuery := LQuery + 'VALUES (:ID, :NOMBRE, :TIPO,:PADRE_ID,:FECHA,:STATUS)';
+  FQueryEditor.SQL.Text := LQuery;
+  FQueryEditor.ParamByName('ID').AsInteger := AThread.id;
+  FQueryEditor.ParamByName('NOMBRE').AsString := AThread.nombre;
+  FQueryEditor.ParamByName('TIPO').ASString := AThread.tipo;
+  FQueryEditor.ParamByName('PADRE_ID').AsInteger := AThread.padreId;
+  FQueryEditor.ParamByName('FECHA').AsDate := AThread.fecha;
+  FQueryEditor.ParamByName('STATUS').AsString := AThread.status;
+  try
+    FQueryEditor.ExecSQL;
+  finally
+
+  end;
+
 end;
 
 function TThreadTable.SELECT_BY_NAME(AName: string): TThread;
 var
-  LId : Integer;
-  LNombre : String;
-  LTipo: String;
-  LPadreId : Integer;
   LFecha : TDate;
   LStatus : String;
   LThread : TThread;
@@ -54,13 +72,10 @@ begin
   FQueryEditor.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE';
   FQueryEditor.ParamByName('NOMBRE').AsString := AName;
   FQueryEditor.Open;
-  LId := FQueryEditor.FieldByName('ID').AsInteger;
-  LNombre := FQueryEditor.FieldByName('NOMBRE').AsString;
-  LTipo := FQueryEditor.FieldByName('TIPO').AsString;
-  LPadreId := FQueryEditor.FieldByName('PADRE_ID').AsInteger;
   LFecha := FQueryEditor.FieldByName('FECHA').AsDateTime;
   LStatus := FQueryEditor.FieldByName('STATUS').AsString;
-  LThread := TThread.Create(LStatus, LFecha, LNombre, LTipo);
+  LThread := TThread.Create(LStatus, LFecha);
   Result := LThread;
 end;
+
 end.

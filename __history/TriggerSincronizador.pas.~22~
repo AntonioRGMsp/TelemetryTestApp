@@ -29,7 +29,7 @@ begin
     begin
       ShowMessage('NO EXISTE');
       CrearRegistro;
-      ShowMessage('CREADO');
+      ShowMessage('CREADO')
     end;
 
 end;

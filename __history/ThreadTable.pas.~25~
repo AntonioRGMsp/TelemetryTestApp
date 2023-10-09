@@ -18,6 +18,7 @@ type
       constructor Create();
       procedure UPDATE(ARow: TThread);
       function SELECT_BY_NAME(AName : String) : TThread;
+      procedure INSERT(AThread : TThread);
   end;
 
 
@@ -30,8 +31,7 @@ implementation
 constructor TThreadTable.Create();
 begin
   FQueryEditor := TFDQuery.Create(nil);
-  FDBConnection := TTelemetryDBConn.Create.GetInstance;
-  FDBConnection.Connect;
+  FQueryEditor.ConnectionName := 'TestConn';
 end;
 
 procedure TThreadTable.UPDATE(ARow: TThread);
@@ -54,7 +54,7 @@ var
 begin
   FQueryEditor.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE';
   FQueryEditor.ParamByName('NOMBRE').AsString := AName;
-  FQueryEditor.ExecSQL;
+  FQueryEditor.Open;
   LId := FQueryEditor.FieldByName('ID').AsInteger;
   LNombre := FQueryEditor.FieldByName('NOMBRE').AsString;
   LTipo := FQueryEditor.FieldByName('TIPO').AsString;

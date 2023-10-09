@@ -29,7 +29,6 @@ begin
     begin
       ShowMessage('NO EXISTE');
       CrearRegistro;
-      ShowMessage('CREADO');
     end;
 
 end;
@@ -51,7 +50,7 @@ var
 
 begin
   LThread := FThreadTable.SELECT_BY_NAME('ControlTelemetria');
-  if(LThread.status = '' ) then
+  if(LThread.nombre = '') then
     Result := False
   else
     Result := True;

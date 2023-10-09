@@ -29,10 +29,8 @@ implementation
 //    fdqryRegister.ExecSQL;
 constructor TThreadTable.Create();
 begin
-  FDBConnection := TTelemetryDBConn.Create.GetInstance;
-  FDBConnection.Connect;
   FQueryEditor := TFDQuery.Create(nil);
-  FQueryEditor.Connection;
+  FQueryEditor.ConnectionName := 'TestConn';
 end;
 
 procedure TThreadTable.UPDATE(ARow: TThread);
@@ -55,7 +53,7 @@ var
 begin
   FQueryEditor.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE';
   FQueryEditor.ParamByName('NOMBRE').AsString := AName;
-  FQueryEditor.ExecSQL;
+  FQueryEditor.Open;
   LId := FQueryEditor.FieldByName('ID').AsInteger;
   LNombre := FQueryEditor.FieldByName('NOMBRE').AsString;
   LTipo := FQueryEditor.FieldByName('TIPO').AsString;
