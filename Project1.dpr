@@ -9,7 +9,10 @@ uses
   Table in 'Table.pas',
   Row in 'Row.pas',
   ThreadTable in 'ThreadTable.pas',
-  Thread in 'Thread.pas';
+  Thread in 'Thread.pas',
+  Trigger in 'Trigger.pas',
+  TriggerSincronizador in 'TriggerSincronizador.pas',
+  FabricaTriggers in 'FabricaTriggers.pas';
 
 {$R *.res}
 

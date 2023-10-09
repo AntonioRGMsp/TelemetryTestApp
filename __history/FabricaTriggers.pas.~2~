@@ -1,0 +1,33 @@
+unit FabricaTriggers;
+
+interface
+uses System.SysUtils, Trigger;
+
+type
+  TFabricaTriggers = class(TObject)
+    private
+    public
+      function CrearTrigger(ANombreTrigger : String) : ITrigger;
+
+  end;
+
+implementation
+  function TFabricaTriggers.CrearTrigger(ANombreTrigger: string): ITrigger;
+  begin
+      // Logic to create the new Trigger.
+    case AnsiIndexStr(ANombreTrigger, ['sincronizador']) of
+      0:
+        begin
+          Result := TEdoMexCoahuila.create;
+        end;
+      1:
+        begin
+          Result := TEdoMexDurango.create;
+        end;
+      2:
+        begin
+          Result := TEdoMexZacatecas.create;
+        end;
+    end;
+  end;
+end.

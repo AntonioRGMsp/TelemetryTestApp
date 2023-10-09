@@ -1,0 +1,25 @@
+unit FabricaTriggers;
+
+interface
+uses System.SysUtils, Trigger, TriggerSincronizador;
+
+type
+  TFabricaTriggers = class(TObject)
+    private
+    public
+      function CrearTrigger(ANombreTrigger : String) : ITrigger;
+
+  end;
+
+implementation
+  function TFabricaTriggers.CrearTrigger(ANombreTrigger: String): ITrigger;
+  begin
+      // Logic to create the new Trigger.
+    case AnsiIndexStr(ANombreTrigger, ['sincronizador', 'Durango', 'Zacatecas']) of
+      0:
+        begin
+          Result := TTriggerSincronizador.create;
+        end;
+    end;
+  end;
+end.

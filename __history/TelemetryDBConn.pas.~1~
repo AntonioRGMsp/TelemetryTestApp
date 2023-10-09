@@ -1,7 +1,0 @@
-unit TelemetryDBConn;
-
-interface
-
-implementation
-
-end.

@@ -81,7 +81,7 @@ end;
 procedure TForm2.btnUpdateClick(Sender: TObject);
 begin
   try
-    fdqryRegister.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
+    fdqryRegister.SQL.Text := 'UPDATE REGISTRY SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
     fdqryRegister.ParamByName('STATUS').AsString := cbbStatus.Text;
     clndrpckrCalendar.DateFormat := 'dd/MM/yyyy';
     fdqryRegister.ParamByName('FECHA').AsDate := clndrpckrCalendar.Date;
@@ -94,7 +94,7 @@ end;
 procedure TForm2.ChangeStatus(AStatus: string);
 begin
   try
-    fdqryChangeStatus.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS WHERE ID = 1';
+    fdqryChangeStatus.SQL.Text := 'UPDATE REGISTRY SET STATUS = :STATUS WHERE ID = 1';
     fdqryChangeStatus.ParamByName('STATUS').AsString := AStatus;
     fdqryChangeStatus.ExecSQL;
   finally
