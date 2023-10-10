@@ -18,9 +18,9 @@ object Form1: TForm1
   object txtTitle: TStaticText
     Left = 182
     Top = 8
-    Width = 237
+    Width = 259
     Height = 37
-    Caption = 'Test Lock Firebird 1'
+    Caption = 'Test App Telemetry 1'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -27
@@ -86,10 +86,11 @@ object Form1: TForm1
       Width = 129
       Height = 21
       TabOrder = 3
-      Text = 'pendiente'
+      Text = 'P'
       Items.Strings = (
-        'pendiente'
-        'finalizado')
+        'P'
+        'F'
+        'E')
     end
     object btnRefresh: TBitBtn
       Left = 128
@@ -165,6 +166,7 @@ object Form1: TForm1
     Top = 8
   end
   object fdqryGetThread: TFDQuery
+    Active = True
     Connection = connTelemetry
     SQL.Strings = (
       'SELECT * FROM REGISTRY')

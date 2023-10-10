@@ -66,43 +66,30 @@ end;
 
 procedure TForm1.btnReloadClick(Sender: TObject);
 begin
-  //RefreshDataSource;
+  RefreshDataSource;
 end;
 
 procedure TForm1.btnRunClick(Sender: TObject);
 begin
-  //ChangeStatus('ejecutando');
   FTrigger := FFabricaTriggers.CrearTrigger('sincronizador');
   FTrigger.Ejecutar;
+  RefreshDataSource;
 end;
 
 procedure TForm1.btnStopClick(Sender: TObject);
 begin
-  //ChangeStatus('finalizado');
+  ChangeStatus('F');
 end;
 
 procedure TForm1.btnUpdateClick(Sender: TObject);
 var
   LThread : TThread;
 begin
-//  fdqryRegister.SQL.BeginUpdate;
-//  try
-//    fdqryRegister.SQL.Add('UPDATE THREAD');
-//    fdqryRegister.SQL.Add('SET STATUS = :STATUS, FECHA = :FECHA');
-//    fdqryRegister.SQL.Add('WHERE ID = 1');
-//  finally
-//    fdqryRegister.SQL.EndUpdate;
-//  end;
   try
-    //LThread := TThread.Create(cbbStatus.Text, clndrpckrCalendar.Date);
-    //FThreadTable.UPDATE(LThread);
-//    fdqryRegister.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
-//    fdqryRegister.ParamByName('STATUS').AsString := cbbStatus.Text;
-//    clndrpckrCalendar.DateFormat := 'yyyy-MM-dd';
-//    fdqryRegister.ParamByName('FECHA').AsDate := clndrpckrCalendar.Date;
-//    fdqryRegister.ExecSQL;
+    LThread := TThread.Create(cbbStatus.Text, clndrpckrCalendar.Date);
+    FThreadTable.UPDATE(LThread);
   finally
-    //RefreshDataSource;
+    RefreshDataSource;
     FreeAndNil(LThread);
   end;
 end;
@@ -113,13 +100,14 @@ begin
   FTelemetryDBConn.Close;
   FreeAndNil(FTelemetryDBConn);
   FreeAndNil(FFabricaTriggers);
+  FThreadTable := nil;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   FTelemetryDBConn := TTelemetryDBConn.Create;
   FTelemetryDBConn.Connect;
-  //FThreadTable := TThreadTable.Create(fdqryRegister);
+  FThreadTable := TThreadTable.Create();
   FFabricaTriggers := TFabricaTriggers.Create;
 end;
 
@@ -130,11 +118,8 @@ var
 begin
   try
     LCurrentDate := Now;
-    //LThread := TThread.Create(AStatus, LCurrentDate);
+    LThread := TThread.Create(AStatus, LCurrentDate);
     FThreadTable.UPDATE(LThread);
-//    fdqryChangeStatus.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS WHERE ID = 1';
-//    fdqryChangeStatus.ParamByName('STATUS').AsString := AStatus;
-//    fdqryChangeStatus.ExecSQL;
   finally
     RefreshDataSource;
     FreeAndNil(LThread);

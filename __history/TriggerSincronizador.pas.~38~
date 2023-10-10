@@ -8,11 +8,14 @@ type
   private
     FThread : TThread;
     FThreadTable : ITable;
+    procedure CrearRegistro;
+    procedure ActualizarRegistro(AStatus : String; AFecha : TDate);
+    function ListoParaEjecutar : Boolean;
     function ExisteRegistro : Boolean;
   public
     constructor Create;
     procedure Ejecutar;
-    procedure CrearRegistro;
+
   end;
 
 implementation
@@ -30,10 +33,14 @@ begin
   if   ExisteRegistro then
     begin
       ShowMessage('SI EXISTE');
-      if (( IsToday(FThread.fecha) = False) AND (FThread.status <> 'F')) then
-        ShowMessage('EJECUTAR')
-      else
+      if (( IsToday(FThread.fecha)) AND (FThread.status = 'F')) then
         ShowMessage('NO EJECUTAR')
+      else
+        begin
+          ShowMessage('EJECUTAR');
+          ActualizarRegistro('E', LCurrentDate);
+        end
+
     end
   else
     begin
@@ -54,6 +61,12 @@ begin
   FThreadTable.INSERT(FThread);
 end;
 
+procedure TTriggerSincronizador.ActualizarRegistro(AStatus: string; AFecha: TDate);
+begin
+  FThread := TThread.Create(AStatus, AFecha);
+  FThreadTable.UPDATE(FThread);
+end;
+
 function TTriggerSincronizador.ExisteRegistro: Boolean;
 begin
   FThread := FThreadTable.SELECT_BY_NAME('ControlTelemetria');
@@ -61,6 +74,22 @@ begin
     Result := False
   else
     Result := True;
+end;
+
+function TTriggerSincronizador.ListoParaEjecutar: Boolean;
+var
+  LCurrentDate: TDateTime;
+begin
+  LCurrentDate := Now;
+   if (( IsToday(FThread.fecha)) AND ((FThread.status = 'F') OR (FThread.status = 'E')))
+      OR ((not IsToday(FThread.fecha)) and (FThread.status = 'E'))
+    then
+        ShowMessage('NO EJECUTAR')
+   else
+    begin
+      ShowMessage('EJECUTAR');
+      ActualizarRegistro('E', LCurrentDate);
+    end
 end;
 
 end.

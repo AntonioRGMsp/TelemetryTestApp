@@ -78,6 +78,7 @@ object Form1: TForm1
       IsEmpty = False
       ParentFont = False
       TabOrder = 2
+      TextHint = 'select a date'
     end
     object cbbStatus: TComboBox
       Left = 184
@@ -130,6 +131,17 @@ object Form1: TForm1
     TabOrder = 3
     OnClick = btnOpenApp2Click
   end
+  object btnReload: TBitBtn
+    Left = 8
+    Top = 28
+    Width = 75
+    Height = 25
+    Caption = '&Reload'
+    Kind = bkRetry
+    NumGlyphs = 2
+    TabOrder = 4
+    OnClick = btnReloadClick
+  end
   object connTelemetry: TFDConnection
     Params.Strings = (
       'Database=C:\data\TELEMETRY.FDB'
@@ -153,10 +165,9 @@ object Form1: TForm1
     Top = 8
   end
   object fdqryGetThread: TFDQuery
-    Active = True
     Connection = connTelemetry
     SQL.Strings = (
-      'SELECT * FROM THREAD;')
+      'SELECT * FROM REGISTRY')
     Left = 16
   end
   object fdqryChangeStatus: TFDQuery

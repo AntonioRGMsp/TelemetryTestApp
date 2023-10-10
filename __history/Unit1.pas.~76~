@@ -11,7 +11,7 @@ uses
   FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids,
   Vcl.DBGrids, System.Classes, Vcl.Graphics, TelemetryDBConn, Unit2, ThreadTable,
-  Row, Table, Thread;
+  Row, Table, Thread, FabricaTriggers, Trigger;
 
 type
   TForm1 = class(TForm)
@@ -42,8 +42,11 @@ type
     { Private declarations }
     FTelemetryDBConn : TTelemetryDBConn;
     FThreadTable : ITable;
+    FFabricaTriggers : TFabricaTriggers;
+    FTrigger : ITrigger;
     procedure ChangeStatus(AStatus : String);
     procedure RefreshDataSource;
+
   public
     { Public declarations }
   end;
@@ -63,39 +66,33 @@ end;
 
 procedure TForm1.btnReloadClick(Sender: TObject);
 begin
-  RefreshDataSource;
+  //RefreshDataSource;
 end;
 
 procedure TForm1.btnRunClick(Sender: TObject);
 begin
-  ChangeStatus('ejecutando');
+  //ChangeStatus('ejecutando');
+  FTrigger := FFabricaTriggers.CrearTrigger('sincronizador');
+  FTrigger.Ejecutar;
 end;
 
 procedure TForm1.btnStopClick(Sender: TObject);
 begin
-  ChangeStatus('finalizado');
+  //ChangeStatus('finalizado');
 end;
 
 procedure TForm1.btnUpdateClick(Sender: TObject);
 var
   LThread : TThread;
 begin
-//  fdqryRegister.SQL.BeginUpdate;
-//  try
-//    fdqryRegister.SQL.Add('UPDATE THREAD');
-//    fdqryRegister.SQL.Add('SET STATUS = :STATUS, FECHA = :FECHA');
-//    fdqryRegister.SQL.Add('WHERE ID = 1');
-//  finally
-//    fdqryRegister.SQL.EndUpdate;
-//  end;
   try
     LThread := TThread.Create(cbbStatus.Text, clndrpckrCalendar.Date);
     FThreadTable.UPDATE(LThread);
-//    fdqryRegister.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
-//    fdqryRegister.ParamByName('STATUS').AsString := cbbStatus.Text;
-//    clndrpckrCalendar.DateFormat := 'dd/MM/yyyy';
-//    fdqryRegister.ParamByName('FECHA').AsDate := clndrpckrCalendar.Date;
-//    fdqryRegister.ExecSQL;
+    //fdqryRegister.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
+    //fdqryRegister.ParamByName('STATUS').AsString := cbbStatus.Text;
+    //clndrpckrCalendar.DateFormat := 'yyyy-MM-dd';
+    //fdqryRegister.ParamByName('FECHA').AsDate := clndrpckrCalendar.Date;
+    //fdqryRegister.ExecSQL;
   finally
     RefreshDataSource;
     FreeAndNil(LThread);
@@ -107,13 +104,15 @@ begin
   // DESTROY CLASSES
   FTelemetryDBConn.Close;
   FreeAndNil(FTelemetryDBConn);
+  FreeAndNil(FFabricaTriggers);
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   FTelemetryDBConn := TTelemetryDBConn.Create;
   FTelemetryDBConn.Connect;
-  FThreadTable := TThreadTable.Create(fdqryRegister);
+  FThreadTable := TThreadTable.Create();
+  FFabricaTriggers := TFabricaTriggers.Create;
 end;
 
 procedure TForm1.ChangeStatus(AStatus: string);

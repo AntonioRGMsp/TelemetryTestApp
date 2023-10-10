@@ -66,7 +66,7 @@ end;
 
 procedure TForm1.btnReloadClick(Sender: TObject);
 begin
-  RefreshDataSource;
+  //RefreshDataSource;
 end;
 
 procedure TForm1.btnRunClick(Sender: TObject);
@@ -78,29 +78,21 @@ end;
 
 procedure TForm1.btnStopClick(Sender: TObject);
 begin
-  ChangeStatus('finalizado');
+  //ChangeStatus('finalizado');
 end;
 
 procedure TForm1.btnUpdateClick(Sender: TObject);
 var
   LThread : TThread;
 begin
-//  fdqryRegister.SQL.BeginUpdate;
-//  try
-//    fdqryRegister.SQL.Add('UPDATE THREAD');
-//    fdqryRegister.SQL.Add('SET STATUS = :STATUS, FECHA = :FECHA');
-//    fdqryRegister.SQL.Add('WHERE ID = 1');
-//  finally
-//    fdqryRegister.SQL.EndUpdate;
-//  end;
   try
-    //LThread := TThread.Create(cbbStatus.Text, clndrpckrCalendar.Date);
+    LThread := TThread.Create(cbbStatus.Text, clndrpckrCalendar.Date);
     FThreadTable.UPDATE(LThread);
-//    fdqryRegister.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
-//    fdqryRegister.ParamByName('STATUS').AsString := cbbStatus.Text;
-//    clndrpckrCalendar.DateFormat := 'dd/MM/yyyy';
-//    fdqryRegister.ParamByName('FECHA').AsDate := clndrpckrCalendar.Date;
-//    fdqryRegister.ExecSQL;
+    //fdqryRegister.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
+    //fdqryRegister.ParamByName('STATUS').AsString := cbbStatus.Text;
+    //clndrpckrCalendar.DateFormat := 'yyyy-MM-dd';
+    //fdqryRegister.ParamByName('FECHA').AsDate := clndrpckrCalendar.Date;
+    //fdqryRegister.ExecSQL;
   finally
     RefreshDataSource;
     FreeAndNil(LThread);

@@ -8,11 +8,13 @@ type
   private
     FThread : TThread;
     FThreadTable : ITable;
+    procedure CrearRegistro;
+    procedure ActualizarRegistro(AStatus : String; AFecha : TDate);
     function ExisteRegistro : Boolean;
   public
     constructor Create;
     procedure Ejecutar;
-    procedure CrearRegistro;
+
   end;
 
 implementation
@@ -30,8 +32,11 @@ begin
   if   ExisteRegistro then
     begin
       ShowMessage('SI EXISTE');
-      if (( IsToday(FThread.fecha)) AND (FThread.status = 'F')) then
-        ShowMessage('EJECUTAR')
+      if (( IsToday(FThread.fecha) = False) AND (FThread.status = 'P')) then
+        begin
+          ShowMessage('EJECUTAR');
+          ActualizarRegistro('E', LCurrentDate);
+        end
       else
         ShowMessage('NO EJECUTAR')
     end
@@ -54,13 +59,16 @@ begin
   FThreadTable.INSERT(FThread);
 end;
 
-function TTriggerSincronizador.ExisteRegistro: Boolean;
-var
-  LThread : TThread;
-
+procedure TTriggerSincronizador.ActualizarRegistro(AStatus: string; AFecha: TDate);
 begin
-  LThread := FThreadTable.SELECT_BY_NAME('ControlTelemetria');
-  if(LThread.status = '' ) then
+  FThread := TThread.Create(AStatus, AFecha);
+  FThreadTable.UPDATE(FThread);
+end;
+
+function TTriggerSincronizador.ExisteRegistro: Boolean;
+begin
+  FThread := FThreadTable.SELECT_BY_NAME('ControlTelemetria');
+  if(FThread.status = '' ) then
     Result := False
   else
     Result := True;

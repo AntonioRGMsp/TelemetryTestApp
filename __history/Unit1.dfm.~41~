@@ -18,9 +18,9 @@ object Form1: TForm1
   object txtTitle: TStaticText
     Left = 182
     Top = 8
-    Width = 214
+    Width = 259
     Height = 37
-    Caption = 'Test Lock Firebird'
+    Caption = 'Test App Telemetry 1'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -27
@@ -78,6 +78,7 @@ object Form1: TForm1
       IsEmpty = False
       ParentFont = False
       TabOrder = 2
+      TextHint = 'select a date'
     end
     object cbbStatus: TComboBox
       Left = 184
@@ -121,6 +122,26 @@ object Form1: TForm1
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
   end
+  object btnOpenApp2: TBitBtn
+    Left = 80
+    Top = 163
+    Width = 75
+    Height = 25
+    Caption = 'Start App2'
+    TabOrder = 3
+    OnClick = btnOpenApp2Click
+  end
+  object btnReload: TBitBtn
+    Left = 8
+    Top = 28
+    Width = 75
+    Height = 25
+    Caption = '&Reload'
+    Kind = bkRetry
+    NumGlyphs = 2
+    TabOrder = 4
+    OnClick = btnReloadClick
+  end
   object connTelemetry: TFDConnection
     Params.Strings = (
       'Database=C:\data\TELEMETRY.FDB'
@@ -147,7 +168,7 @@ object Form1: TForm1
     Active = True
     Connection = connTelemetry
     SQL.Strings = (
-      'SELECT * FROM THREAD;')
+      'SELECT * FROM REGISTRY')
     Left = 16
   end
   object fdqryChangeStatus: TFDQuery
