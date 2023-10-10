@@ -1,17 +1,20 @@
 unit TriggerSincronizador;
 
 interface
-uses System.SysUtils, Trigger, ThreadTable, Table, Thread, Vcl.Dialogs;
+uses System.SysUtils, System.DateUtils, Trigger, ThreadTable, Table, Thread, Vcl.Dialogs;
 
 type
   TTriggerSincronizador = class(TInterfacedObject, ITrigger)
   private
+    FThread : TThread;
     FThreadTable : ITable;
+    procedure CrearRegistro;
+    procedure ActualizarRegistro(AStatus : String; AFecha : TDate);
     function ExisteRegistro : Boolean;
   public
     constructor Create;
     procedure Ejecutar;
-    procedure CrearRegistro;
+
   end;
 
 implementation
@@ -21,10 +24,22 @@ begin
 end;
 
 procedure TTriggerSincronizador.Ejecutar;
+var
+  LCurrentDate: TDateTime;
 begin
+  LCurrentDate := Now;
   // Logica para decidir  si se debe lanzar el sincronizador o no
   if   ExisteRegistro then
-    ShowMessage('SI EXISTE')
+    begin
+      ShowMessage('SI EXISTE');
+      if (( IsToday(FThread.fecha) = False) AND (FThread.status = 'P')) then
+        begin
+          ShowMessage('EJECUTAR');
+          ActualizarRegistro('E', LCurrentDate);
+        end
+      else
+        ShowMessage('NO EJECUTAR')
+    end
   else
     begin
       ShowMessage('NO EXISTE');
@@ -37,21 +52,23 @@ end;
 
 procedure TTriggerSincronizador.CrearRegistro;
 var
-  LThread : TThread;
   LCurrentDate: TDateTime;
 begin
   LCurrentDate := Now;
-  LThread := TThread.Create('P', LCurrentDate);
-  FThreadTable.INSERT(LThread);
+  FThread := TThread.Create('P', LCurrentDate);
+  FThreadTable.INSERT(FThread);
+end;
+
+procedure TTriggerSincronizador.ActualizarRegistro(AStatus: string; AFecha: TDate);
+begin
+  FThread := TThread.Create(AStatus, AFecha);
+  FThreadTable.UPDATE(FThread);
 end;
 
 function TTriggerSincronizador.ExisteRegistro: Boolean;
-var
-  LThread : TThread;
-
 begin
-  LThread := FThreadTable.SELECT_BY_NAME('ControlTelemetria');
-  if(LThread.status = '' ) then
+  FThread := FThreadTable.SELECT_BY_NAME('ControlTelemetria');
+  if(FThread.status = '' ) then
     Result := False
   else
     Result := True;

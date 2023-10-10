@@ -1,0 +1,69 @@
+unit TriggerSincronizador;
+
+interface
+uses System.SysUtils, System.DateUtils, Trigger, ThreadTable, Table, Thread, Vcl.Dialogs;
+
+type
+  TTriggerSincronizador = class(TInterfacedObject, ITrigger)
+  private
+    FThread : TThread;
+    FThreadTable : ITable;
+    function ExisteRegistro : Boolean;
+  public
+    constructor Create;
+    procedure Ejecutar;
+    procedure CrearRegistro;
+  end;
+
+implementation
+constructor TTriggerSincronizador.Create;
+begin
+   FThreadTable := TThreadTable.Create;
+end;
+
+procedure TTriggerSincronizador.Ejecutar;
+var
+  LCurrentDate: TDateTime;
+begin
+  LCurrentDate := Now;
+  // Logica para decidir  si se debe lanzar el sincronizador o no
+  if   ExisteRegistro then
+    begin
+      ShowMessage('SI EXISTE');
+      if (( IsToday(FThread.fecha) = False) AND (FThread.status <> 'F')) then
+        ShowMessage('EJECUTAR')
+      else
+        ShowMessage('NO EJECUTAR')
+    end
+  else
+    begin
+      ShowMessage('NO EXISTE');
+      CrearRegistro;
+      ShowMessage('CREADO');
+    end;
+
+end;
+
+
+procedure TTriggerSincronizador.CrearRegistro;
+var
+  LCurrentDate: TDateTime;
+begin
+  LCurrentDate := Now;
+  FThread := TThread.Create('P', LCurrentDate);
+  FThreadTable.INSERT(FThread);
+end;
+
+function TTriggerSincronizador.ExisteRegistro: Boolean;
+var
+  LThread : TThread;
+
+begin
+  LThread := FThreadTable.SELECT_BY_NAME('ControlTelemetria');
+  if(LThread.status = '' ) then
+    Result := False
+  else
+    Result := True;
+end;
+
+end.
