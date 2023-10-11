@@ -1,0 +1,63 @@
+unit Unit2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Phys, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Phys.FB, FireDAC.Phys.FBDef, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet;
+
+type
+  TForm2 = class(TForm)
+    btnRunLock: TBitBtn;
+    conDBTelemetry: TFDConnection;
+    fdqryRegister: TFDQuery;
+    fdqryTest: TFDQuery;
+    procedure btnRunLockClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm2.btnRunLockClick(Sender: TObject);
+var
+  LFecha : TDate;
+  LStatus : String;
+  LThread : TThread;
+  I: Integer;
+begin
+  try
+    fdqryRegister.Connection.StartTransaction;
+    fdqryRegister.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE FOR UPDATE WITH LOCK';
+    fdqryRegister.ParamByName('NOMBRE').AsString := 'ControlTelemetria';
+    fdqryRegister.Open;
+    LFecha := fdqryRegister.FieldByName('FECHA').AsDateTime;
+    LStatus := fdqryRegister.FieldByName('STATUS').AsString;
+
+    // Start transaction here
+    for I := 0 to 500 do
+      begin
+        fdqryTest.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE';
+        fdqryTest.Open;
+      end;
+    ShowMessage('Finished');
+    fdqryRegister.Connection.Commit;
+  except
+    ShowMessage('Error');
+    fdqryRegister.Connection.Rollback;
+  end;
+end;
+
+end.

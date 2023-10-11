@@ -2,8 +2,8 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2023/09/29 15:25:25.000.189,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\Unit1.pas</Transaction>
-    <Transaction>2023/09/29 15:26:34.000.637,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\Unit1.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit1.pas</Transaction>
     <Transaction>2023/09/29 15:26:34.000.637,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\Unit1.dfm=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit1.dfm</Transaction>
+    <Transaction>2023/09/29 15:26:34.000.637,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\Unit1.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit1.pas</Transaction>
     <Transaction>2023/09/29 15:26:40.000.746,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\Project1.dproj=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Project1.dproj</Transaction>
     <Transaction>2023/09/29 16:36:28.000.088,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas</Transaction>
     <Transaction>2023/09/29 16:36:38.000.000,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\ConnectionDB.pas</Transaction>
@@ -24,5 +24,13 @@
     <Transaction>2023/10/09 13:37:05.000.583,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\TriggerSincronizador.pas</Transaction>
     <Transaction>2023/10/09 13:39:31.000.711,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
     <Transaction>2023/10/09 13:39:39.000.567,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\FabricaTriggers.pas</Transaction>
+    <Transaction>2023/10/10 17:09:49.000.951,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas=</Transaction>
+    <Transaction>2023/10/10 17:20:27.000.942,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas</Transaction>
+    <Transaction>2023/10/10 17:21:11.000.923,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas=</Transaction>
+    <Transaction>2023/10/10 17:25:34.000.028,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas</Transaction>
+    <Transaction>2023/10/10 17:30:28.000.310,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas=</Transaction>
+    <Transaction>2023/10/10 17:30:37.000.718,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas</Transaction>
+    <Transaction>2023/10/10 17:39:20.000.734,C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit3.pas=</Transaction>
+    <Transaction>2023/10/10 17:39:46.000.153,=C:\Users\carlos.ramirez\Documents\Embarcadero\Studio\DelphiProjects\TestLockDB\Unit2.pas</Transaction>
   </Transactions>
 </BorlandProject>

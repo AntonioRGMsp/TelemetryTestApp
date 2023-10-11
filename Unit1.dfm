@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'App1'
-  ClientHeight = 196
+  ClientHeight = 336
   ClientWidth = 579
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -112,8 +112,8 @@ object Form1: TForm1
   end
   object dbgrd1: TDBGrid
     Left = 8
-    Top = 51
-    Width = 228
+    Top = 242
+    Width = 549
     Height = 90
     DataSource = ds1
     TabOrder = 2
@@ -123,25 +123,33 @@ object Form1: TForm1
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
   end
-  object btnOpenApp2: TBitBtn
-    Left = 80
-    Top = 163
-    Width = 75
-    Height = 25
-    Caption = 'Start App2'
-    TabOrder = 3
-    OnClick = btnOpenApp2Click
-  end
   object btnReload: TBitBtn
     Left = 8
-    Top = 28
+    Top = 211
     Width = 75
     Height = 25
     Caption = '&Reload'
     Kind = bkRetry
     NumGlyphs = 2
-    TabOrder = 4
+    TabOrder = 3
     OnClick = btnReloadClick
+  end
+  object grpControlLock: TGroupBox
+    Left = 8
+    Top = 51
+    Width = 217
+    Height = 137
+    Caption = 'Control Lock'
+    TabOrder = 4
+    object btnRunLock: TBitBtn
+      Left = 72
+      Top = 56
+      Width = 75
+      Height = 25
+      Caption = 'btnRunLock'
+      TabOrder = 0
+      OnClick = btnRunLockClick
+    end
   end
   object connTelemetry: TFDConnection
     Params.Strings = (

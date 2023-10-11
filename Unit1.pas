@@ -29,8 +29,9 @@ type
     btnRefresh: TBitBtn;
     btnStop: TBitBtn;
     fdqryChangeStatus: TFDQuery;
-    btnOpenApp2: TBitBtn;
     btnReload: TBitBtn;
+    grpControlLock: TGroupBox;
+    btnRunLock: TBitBtn;
     procedure btnUpdateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -38,6 +39,7 @@ type
     procedure btnStopClick(Sender: TObject);
     procedure btnOpenApp2Click(Sender: TObject);
     procedure btnReloadClick(Sender: TObject);
+    procedure btnRunLockClick(Sender: TObject);
   private
     { Private declarations }
     FTelemetryDBConn : TTelemetryDBConn;
@@ -74,6 +76,42 @@ begin
   FTrigger := FFabricaTriggers.CrearTrigger('sincronizador');
   FTrigger.Ejecutar;
   RefreshDataSource;
+end;
+
+procedure TForm1.btnRunLockClick(Sender: TObject);
+var
+  LFecha: TDate;
+  LStatus: string;
+  LThread: TThread;
+  I: Integer;
+begin
+  try
+    LFecha := Now;
+
+    fdqryRegister.Connection.StartTransaction;
+
+    fdqryRegister.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE  FOR UPDATE WITH LOCK';
+    fdqryRegister.ParamByName('NOMBRE').AsString := 'ControlTelemetria';
+    fdqryRegister.Open;
+
+    fdqryRegister.SQL.Text := 'UPDATE REGISTRY SET STATUS = :STATUS, FECHA = :FECHA WHERE NOMBRE = :NOMBRE';
+    fdqryRegister.ParamByName('STATUS').AsString := 'E';
+    fdqryRegister.ParamByName('FECHA').AsDate := Now;
+    fdqryRegister.ParamByName('NOMBRE').AsString := 'ControlTelemetria';
+    fdqryRegister.ExecSQL;
+    // Start transaction here
+    for I := 0 to 2000 do
+    begin
+      FThreadTable.SELECT_BY_NAME('ControlTelemetria');
+    end;
+    fdqryRegister.Connection.Commit;
+    ChangeStatus('E');
+    RefreshDataSource;
+    ShowMessage('APP 1 - Finished');
+  except
+    ShowMessage('APP 1 - Error');
+    fdqryRegister.Connection.Rollback;
+  end;
 end;
 
 procedure TForm1.btnStopClick(Sender: TObject);

@@ -1,0 +1,79 @@
+unit Unit2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Phys, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Phys.FB, FireDAC.Phys.FBDef, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet;
+
+type
+  TForm2 = class(TForm)
+    btnRunLock: TBitBtn;
+    conDBTelemetry: TFDConnection;
+    fdqryRegister: TFDQuery;
+    fdqryTest: TFDQuery;
+    btnUpdate: TBitBtn;
+    procedure btnRunLockClick(Sender: TObject);
+    procedure btnUpdateClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm2.btnRunLockClick(Sender: TObject);
+var
+  LFecha : TDate;
+  LStatus : String;
+  LThread : TThread;
+  I: Integer;
+begin
+  try
+    fdqryRegister.Connection.StartTransaction;
+    fdqryRegister.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE FOR UPDATE WITH LOCK';
+    fdqryRegister.ParamByName('NOMBRE').AsString := 'ControlTelemetria';
+    fdqryRegister.Open;
+    LFecha := fdqryRegister.FieldByName('FECHA').AsDateTime;
+    LStatus := fdqryRegister.FieldByName('STATUS').AsString;
+
+    // Start transaction here
+    for I := 0 to 1000 do
+      begin
+        fdqryTest.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE';
+        fdqryTest.ParamByName('NOMBRE').AsString := 'ControlTelemetria';
+        fdqryTest.Open;
+      end;
+    fdqryRegister.Connection.Commit;
+  except
+    ShowMessage('Error');
+    fdqryRegister.Connection.Rollback;
+  end;
+end;
+
+procedure TForm2.btnUpdateClick(Sender: TObject);
+var
+  LQueryText : string;
+begin
+  try
+    LQueryText := 'UPDATE REGISTRY';
+    LQueryText := LQueryText + 'SET STATUS  =:STATUS, FECHA =:FECHA';
+    LQueryText := LQueryText + 'WHERE NOMBRE=ControlTelemetria';
+    fdqryRegister.SQL.Text := LQueryText;
+  finally
+
+  end;
+end;
+
+end.

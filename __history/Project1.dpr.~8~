@@ -1,0 +1,24 @@
+program Project1;
+
+uses
+  Vcl.Forms,
+  Unit1 in 'Unit1.pas' {Form1},
+  ConnectionDB in 'ConnectionDB.pas',
+  TelemetryDBConn in 'TelemetryDBConn.pas',
+  Table in 'Table.pas',
+  Row in 'Row.pas',
+  ThreadTable in 'ThreadTable.pas',
+  Thread in 'Thread.pas',
+  Trigger in 'Trigger.pas',
+  TriggerSincronizador in 'TriggerSincronizador.pas',
+  FabricaTriggers in 'FabricaTriggers.pas',
+  Unit2 in 'Unit2.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
