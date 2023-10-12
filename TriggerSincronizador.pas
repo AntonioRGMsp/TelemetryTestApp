@@ -1,13 +1,15 @@
 unit TriggerSincronizador;
 
 interface
-uses System.SysUtils, System.DateUtils, Trigger, ThreadTable, Table, Thread, Vcl.Dialogs;
+uses System.SysUtils, System.DateUtils, Trigger, ThreadTable, Table, Thread,
+Vcl.Dialogs, ConnectionDB, TelemetryDBConn;
 
 type
   TTriggerSincronizador = class(TInterfacedObject, ITrigger)
   private
     FThread : TThread;
     FThreadTable : ITable;
+    FConnection : IConnectionDB;
     procedure CrearRegistro;
     procedure ActualizarRegistro(AStatus : String; AFecha : TDate);
     function ListoParaEjecutar : Boolean;
@@ -21,7 +23,7 @@ type
 implementation
 constructor TTriggerSincronizador.Create;
 begin
-   FThreadTable := TThreadTable.Create;
+  FThreadTable := TThreadTable.Create;
 end;
 
 procedure TTriggerSincronizador.Ejecutar;

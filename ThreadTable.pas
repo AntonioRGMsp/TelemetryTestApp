@@ -15,15 +15,16 @@ type
       FDBConnection : IConnectionDB;
     public
       //constructor Create(AQueryComponent : TFDQuery);
-      constructor Create();
+      constructor Create;
       procedure UPDATE(ARow: TThread);
+      procedure UPDATE_LOCK(ARow : TThread);
       function SELECT_BY_NAME(AName : String) : TThread;
       procedure INSERT(AThread : TThread);
   end;
 
 
 implementation
-constructor TThreadTable.Create();
+constructor TThreadTable.Create;
 begin
   FQueryEditor := TFDQuery.Create(nil);
   FQueryEditor.ConnectionName := 'TestConn';
@@ -56,6 +57,20 @@ begin
 
   end;
 
+end;
+
+procedure TThreadTable.UPDATE_LOCK(ARow: TThread);
+begin
+  try
+    FQueryEditor.Connection.StartTransaction;
+    FQueryEditor.SQL.Text := 'SELECT * FROM REGISTRY WHERE ID=1';
+    FQueryEditor.Open();
+    FQueryEditor.Connection.Commit;
+    ShowMessage('Lock successfully');
+  except
+  FQueryEditor.Connection.Rollback;
+    ShowMessage('Error on lock');
+  end;
 end;
 
 function TThreadTable.SELECT_BY_NAME(AName: string): TThread;

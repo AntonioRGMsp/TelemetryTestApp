@@ -143,7 +143,7 @@ object Form1: TForm1
     TabOrder = 4
     object btnRunLock: TBitBtn
       Left = 72
-      Top = 56
+      Top = 39
       Width = 75
       Height = 25
       Caption = 'btnRunLock'

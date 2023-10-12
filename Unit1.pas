@@ -11,7 +11,7 @@ uses
   FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids,
   Vcl.DBGrids, System.Classes, Vcl.Graphics, TelemetryDBConn, Unit2, ThreadTable,
-  Row, Table, Thread, FabricaTriggers, Trigger;
+  Row, Table, Thread, FabricaTriggers, Trigger, ConnectionDB;
 
 type
   TForm1 = class(TForm)
@@ -42,7 +42,7 @@ type
     procedure btnRunLockClick(Sender: TObject);
   private
     { Private declarations }
-    FTelemetryDBConn : TTelemetryDBConn;
+    FTelemetryDBConn : IConnectionDB;
     FThreadTable : ITable;
     FFabricaTriggers : TFabricaTriggers;
     FTrigger : ITrigger;
@@ -135,17 +135,17 @@ end;
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   // DESTROY CLASSES
-//  FTelemetryDBConn.Close;
-//  FreeAndNil(FTelemetryDBConn);
+  //FTelemetryDBConn.Close;
+  //FTelemetryDBConn := nil;
   FreeAndNil(FFabricaTriggers);
   FThreadTable := nil;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-//  FTelemetryDBConn := TTelemetryDBConn.Create;
-//  FTelemetryDBConn.Connect;
-  FThreadTable := TThreadTable.Create();
+  //FTelemetryDBConn := TTelemetryDBConn.Create;
+  //FTelemetryDBConn.Connect;
+  FThreadTable := TThreadTable.Create;
   FFabricaTriggers := TFabricaTriggers.Create;
 end;
 

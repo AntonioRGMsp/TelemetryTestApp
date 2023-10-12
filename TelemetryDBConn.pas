@@ -20,6 +20,7 @@ type
       procedure Connect;
       procedure Close;
       function GetInstance : IConnectionDB;
+      function GetComponentConnection : TFDConnection;
   end;
 
 implementation
@@ -52,6 +53,11 @@ implementation
       FInstance := TTelemetryDBConn.Create;
 
     Result := FInstance;
+  end;
+
+  function TTelemetryDBConn.GetComponentConnection: TFDConnection;
+  begin
+    Result := FDConnectionDB;
   end;
 
 end.
