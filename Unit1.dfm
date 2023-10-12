@@ -152,12 +152,13 @@ object Form1: TForm1
     end
   end
   object connTelemetry: TFDConnection
+    ConnectionName = 'TestConn'
     Params.Strings = (
-      'Database=C:\data\TELEMETRY.FDB'
       'User_Name=SYSDBA'
       'Password=masterkey'
+      'Database=C:\data\TELEMETRY.FDB'
       'Port=3050'
-      'CharacterSet=ISO8859_3'
+      'CharacterSet=ISO8859_1'
       'DriverID=FB')
     Connected = True
     Left = 416

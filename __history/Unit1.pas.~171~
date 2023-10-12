@@ -29,8 +29,9 @@ type
     btnRefresh: TBitBtn;
     btnStop: TBitBtn;
     fdqryChangeStatus: TFDQuery;
-    btnOpenApp2: TBitBtn;
     btnReload: TBitBtn;
+    grpControlLock: TGroupBox;
+    btnRunLock: TBitBtn;
     procedure btnUpdateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -38,6 +39,7 @@ type
     procedure btnStopClick(Sender: TObject);
     procedure btnOpenApp2Click(Sender: TObject);
     procedure btnReloadClick(Sender: TObject);
+    procedure btnRunLockClick(Sender: TObject);
   private
     { Private declarations }
     FTelemetryDBConn : TTelemetryDBConn;
@@ -66,19 +68,55 @@ end;
 
 procedure TForm1.btnReloadClick(Sender: TObject);
 begin
-  //RefreshDataSource;
+  RefreshDataSource;
 end;
 
 procedure TForm1.btnRunClick(Sender: TObject);
 begin
-  //ChangeStatus('ejecutando');
   FTrigger := FFabricaTriggers.CrearTrigger('sincronizador');
   FTrigger.Ejecutar;
+  //RefreshDataSource;
+end;
+
+procedure TForm1.btnRunLockClick(Sender: TObject);
+var
+  LFecha: TDate;
+  LStatus: string;
+  LThread: TThread;
+  I: Integer;
+begin
+  try
+    LFecha := Now;
+
+    fdqryRegister.Connection.StartTransaction;
+
+    fdqryRegister.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE  FOR UPDATE WITH LOCK';
+    fdqryRegister.ParamByName('NOMBRE').AsString := 'ControlTelemetria';
+    fdqryRegister.Open;
+
+    fdqryRegister.SQL.Text := 'UPDATE REGISTRY SET STATUS = :STATUS, FECHA = :FECHA WHERE NOMBRE = :NOMBRE';
+    fdqryRegister.ParamByName('STATUS').AsString := 'E';
+    fdqryRegister.ParamByName('FECHA').AsDate := Now;
+    fdqryRegister.ParamByName('NOMBRE').AsString := 'ControlTelemetria';
+    fdqryRegister.ExecSQL;
+    // Start transaction here
+    for I := 0 to 2000 do
+    begin
+      FThreadTable.SELECT_BY_NAME('ControlTelemetria');
+    end;
+    fdqryRegister.Connection.Commit;
+    ChangeStatus('E');
+    RefreshDataSource;
+    ShowMessage('APP 1 - Finished');
+  except
+    ShowMessage('APP 1 - Error');
+    fdqryRegister.Connection.Rollback;
+  end;
 end;
 
 procedure TForm1.btnStopClick(Sender: TObject);
 begin
-  //ChangeStatus('finalizado');
+  ChangeStatus('F');
 end;
 
 procedure TForm1.btnUpdateClick(Sender: TObject);
@@ -88,11 +126,6 @@ begin
   try
     LThread := TThread.Create(cbbStatus.Text, clndrpckrCalendar.Date);
     FThreadTable.UPDATE(LThread);
-    //fdqryRegister.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
-    //fdqryRegister.ParamByName('STATUS').AsString := cbbStatus.Text;
-    //clndrpckrCalendar.DateFormat := 'yyyy-MM-dd';
-    //fdqryRegister.ParamByName('FECHA').AsDate := clndrpckrCalendar.Date;
-    //fdqryRegister.ExecSQL;
   finally
     RefreshDataSource;
     FreeAndNil(LThread);
@@ -105,13 +138,14 @@ begin
   FTelemetryDBConn.Close;
   FreeAndNil(FTelemetryDBConn);
   FreeAndNil(FFabricaTriggers);
+  FThreadTable := nil;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   FTelemetryDBConn := TTelemetryDBConn.Create;
   FTelemetryDBConn.Connect;
-  FThreadTable := TThreadTable.Create(fdqryRegister);
+  FThreadTable := TThreadTable.Create();
   FFabricaTriggers := TFabricaTriggers.Create;
 end;
 
@@ -124,9 +158,6 @@ begin
     LCurrentDate := Now;
     LThread := TThread.Create(AStatus, LCurrentDate);
     FThreadTable.UPDATE(LThread);
-//    fdqryChangeStatus.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS WHERE ID = 1';
-//    fdqryChangeStatus.ParamByName('STATUS').AsString := AStatus;
-//    fdqryChangeStatus.ExecSQL;
   finally
     RefreshDataSource;
     FreeAndNil(LThread);

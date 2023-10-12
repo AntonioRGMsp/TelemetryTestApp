@@ -6,7 +6,7 @@ uses Row, Table, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error,
   FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB, FireDAC.Phys.FBDef,
   FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Thread,
-  TelemetryDBConn, ConnectionDB;
+  Vcl.Dialogs, TelemetryDBConn, ConnectionDB;
 
 type
   TThreadTable = class (TInterfacedObject, ITable)
@@ -23,11 +23,6 @@ type
 
 
 implementation
-//    fdqryRegister.SQL.Text := 'UPDATE THREAD SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
-//    fdqryRegister.ParamByName('STATUS').AsString := cbbStatus.Text;
-//    clndrpckrCalendar.DateFormat := 'dd/MM/yyyy';
-//    fdqryRegister.ParamByName('FECHA').AsDate := clndrpckrCalendar.Date;
-//    fdqryRegister.ExecSQL;
 constructor TThreadTable.Create();
 begin
   FQueryEditor := TFDQuery.Create(nil);

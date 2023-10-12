@@ -135,16 +135,16 @@ end;
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   // DESTROY CLASSES
-  FTelemetryDBConn.Close;
-  FreeAndNil(FTelemetryDBConn);
+//  FTelemetryDBConn.Close;
+//  FreeAndNil(FTelemetryDBConn);
   FreeAndNil(FFabricaTriggers);
   FThreadTable := nil;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  FTelemetryDBConn := TTelemetryDBConn.Create;
-  FTelemetryDBConn.Connect;
+//  FTelemetryDBConn := TTelemetryDBConn.Create;
+//  FTelemetryDBConn.Connect;
   FThreadTable := TThreadTable.Create();
   FFabricaTriggers := TFabricaTriggers.Create;
 end;
