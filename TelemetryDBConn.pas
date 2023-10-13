@@ -9,6 +9,11 @@ uses ConnectionDB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error,
   Vcl.Dialogs;
 
 type
+    /// <summary>
+    ///   Clase encargada de crear y manipular la conexion a la DB
+    ///  Aplica el patron Singleton para mantener una unica instancia en
+    ///  toda la App
+    /// </summary>
   TTelemetryDBConn = class(TInterfacedObject, IConnectionDB)
     private
       FDConnectionDB : TFDConnection;
@@ -17,9 +22,22 @@ type
 
     public
       constructor Create;
+      /// <summary>
+      ///   Se encarga de crear la conexion a la BD y dejarla lista para interactuar.
+      /// </summary>
       procedure Connect;
+      /// <summary>
+      ///   Se encarga de cerrar la conexion con la BD
+      /// </summary>
       procedure Close;
+      /// <summary>
+      ///   se encarga de aplicar el patron Singleton para asegurarnos de tener
+      ///  solamente una instancia con la conexion a la BD.
+      /// </summary>
       function GetInstance : IConnectionDB;
+      /// <summary>
+      ///     Ignorar esta funcion, es una funcion en etapa de prueba
+      /// </summary>
       function GetComponentConnection : TFDConnection;
   end;
 
@@ -31,8 +49,10 @@ implementation
 
   procedure TTelemetryDBConn.Connect;
   begin
+    // Se crea la configuracion para poder conectarse a la DB
+    // Todos estos campos son requeridos para crear la conexion
     FDConnectionDB := TFDConnection.Create(nil);
-    FDConnectionDB.ConnectionName := 'TestConn';
+    //FDConnectionDB.ConnectionName := 'TestConn';
     FDConnectionDB.Params.DriverID := 'FB';
     FDConnectionDB.Params.Database := 'C:\data\TELEMETRY.FDB';
     FDConnectionDB.Params.UserName := 'SYSDBA';
@@ -49,6 +69,7 @@ implementation
 
   function TTelemetryDBConn.GetInstance: IConnectionDB;
   begin
+    //Logica para aplicar el patron Singleton
     if not Assigned (FInstance) then
       FInstance := TTelemetryDBConn.Create;
 

@@ -9,25 +9,67 @@ uses Row, Table, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error,
   Vcl.Dialogs, TelemetryDBConn, ConnectionDB;
 
 type
+  /// <summary>
+  ///   Clase encargada de interactuar con la tabla del registro del Thread
+  ///  a traves de consultas SQL
+  /// </summary>
   TThreadTable = class (TInterfacedObject, ITable)
     private
       FQueryEditor : TFDQuery;
-      FDBConnection : IConnectionDB;
+      FDBConnection : TFDConnection;
+
     public
-      //constructor Create(AQueryComponent : TFDQuery);
+      /// <summary>
+      ///     Inicializa la instancia de TFDQuery y se configura la conexion
+      ///  a la DB.
+      /// </summary>
       constructor Create;
+      /// <summary>
+      ///   Actualiza el registro del Thread
+      /// </summary>
+      /// <param name="ARow">
+      ///   Recibe el Schema del Thread con sus respectivos datos.
+      /// </param>
       procedure UPDATE(ARow: TThread);
+      /// <summary>
+      ///   Realiza una transaccion que bloquea el registro mientras este se
+      ///   actualiza, cuando termina de actualizarse el registro se libera el
+      ///   registro para posteriores modificaciones.
+      /// </summary>
+      /// <param name="ARow">
+      ///   Recibe el Schema del Thread con sus respectivos datos.
+      /// </param>
       procedure UPDATE_LOCK(ARow : TThread);
+      /// <summary>
+      ///   Busca el registro del Thread a trabés de su nombre
+      /// </summary>
+      /// <param name="AName">
+      ///   Nombre del Thread que se almacena en el registro
+      /// </param>
+      /// <returns>
+      ///   Si el registro existe retorna un objeto TThread cumpliendo con todos
+      ///  sus datos, en caso de no encontrarse, estos datos se retornan vacios.
+      /// </returns>
       function SELECT_BY_NAME(AName : String) : TThread;
+      /// <summary>
+      ///   Crea el registro del Thread
+      /// </summary>
+      /// <param name="AThread">
+      ///   Schema del registro del Thread con todos los datos requeridos.
+      /// </param>
       procedure INSERT(AThread : TThread);
   end;
 
 
 implementation
+uses Unit1;
+
 constructor TThreadTable.Create;
 begin
   FQueryEditor := TFDQuery.Create(nil);
+  // Conexion de TFDQuery con la DB
   FQueryEditor.ConnectionName := 'TestConn';
+  FQueryEditor.Connection := Form1.connection;
 end;
 
 procedure TThreadTable.UPDATE(ARow: TThread);
@@ -60,15 +102,27 @@ begin
 end;
 
 procedure TThreadTable.UPDATE_LOCK(ARow: TThread);
+var
+  I :Integer;
 begin
   try
     FQueryEditor.Connection.StartTransaction;
-    FQueryEditor.SQL.Text := 'SELECT * FROM REGISTRY WHERE ID=1';
+    // Con esta query se bloquea el registro
+    FQueryEditor.SQL.Text := 'SELECT * FROM REGISTRY WHERE ID=1 FOR UPDATE WITH LOCK';
     FQueryEditor.Open();
+    UPDATE(ARow);
+    for I := 0 to 2000 do
+    begin
+      SELECT_BY_NAME(ARow.nombre);
+    end;
+    // Con Commit se libera el registro y se guardan todos los cambios que
+    // se realizaron durante la transaccion
     FQueryEditor.Connection.Commit;
     ShowMessage('Lock successfully');
   except
-  FQueryEditor.Connection.Rollback;
+    // Con Commit se libera el registro y deshace todos los cambios que
+    // se realizaron durante la transaccion
+    FQueryEditor.Connection.Rollback;
     ShowMessage('Error on lock');
   end;
 end;

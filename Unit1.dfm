@@ -16,11 +16,11 @@ object Form1: TForm1
   PixelsPerInch = 96
   TextHeight = 13
   object txtTitle: TStaticText
-    Left = 182
+    Left = 231
     Top = 8
-    Width = 259
+    Width = 73
     Height = 37
-    Caption = 'Test App Telemetry 1'
+    Caption = 'APP 1'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -27
@@ -149,6 +149,15 @@ object Form1: TForm1
       Caption = 'btnRunLock'
       TabOrder = 0
       OnClick = btnRunLockClick
+    end
+    object btnLockTable: TBitBtn
+      Left = 72
+      Top = 80
+      Width = 75
+      Height = 25
+      Caption = 'Lock table'
+      TabOrder = 1
+      OnClick = btnLockTableClick
     end
   end
   object connTelemetry: TFDConnection

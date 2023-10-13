@@ -1,0 +1,49 @@
+unit Thread;
+
+interface
+uses Row;
+
+type
+  TThread = class (TInterfacedObject, IRow)
+    private
+      FId : Integer;
+      FNombre : String;
+      FTipo: String;
+      FPadreId : Integer;
+      FFecha : TDate;
+      FStatus : String;
+      procedure SetStatus(AStatus : String);
+      procedure SetFecha(ADate : TDate);
+
+    public
+      constructor Create(AStatus: string; ADate: TDate);
+      property id : Integer read FId;
+      property nombre : String read FNombre;
+      property tipo : String read FTipo;
+      property padreId : Integer read FPadreId;
+      property fecha : TDate read FFecha write SetFecha;
+      property status : string read FStatus write SetStatus;
+  end;
+
+implementation
+  constructor TThread.Create(AStatus: string; ADate: TDate);
+  begin
+    FId := 1;
+    FPadreId := 0;
+    FStatus := AStatus;
+    FFecha := ADate;
+    FNombre := 'ControlTelemetria';
+    FTipo := 'V';
+  end;
+
+  procedure TThread.SetStatus(AStatus: string);
+  begin
+    FStatus := AStatus;
+  end;
+
+  procedure TThread.SetFecha(ADate: TDate);
+  begin
+    // Aqui se debe obtener la fecha actual
+    FFecha := ADate;
+  end;
+end.

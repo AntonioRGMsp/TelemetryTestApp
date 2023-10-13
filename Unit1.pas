@@ -32,14 +32,15 @@ type
     btnReload: TBitBtn;
     grpControlLock: TGroupBox;
     btnRunLock: TBitBtn;
+    btnLockTable: TBitBtn;
     procedure btnUpdateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnRunClick(Sender: TObject);
     procedure btnStopClick(Sender: TObject);
-    procedure btnOpenApp2Click(Sender: TObject);
     procedure btnReloadClick(Sender: TObject);
     procedure btnRunLockClick(Sender: TObject);
+    procedure btnLockTableClick(Sender: TObject);
   private
     { Private declarations }
     FTelemetryDBConn : IConnectionDB;
@@ -51,6 +52,7 @@ type
 
   public
     { Public declarations }
+    property connection : TFDConnection read connTelemetry;
   end;
 
 var
@@ -61,9 +63,19 @@ implementation
 {$R *.dfm}
 
 
-procedure TForm1.btnOpenApp2Click(Sender: TObject);
+procedure TForm1.btnLockTableClick(Sender: TObject);
+var
+  LThread : TThread;
+  LFecha : TDateTime;
 begin
-  Form2.Show;
+  try
+    LFecha := Now;
+    LThread := TThread.Create('E', LFecha);
+    FThreadTable.UPDATE_LOCK(LThread);
+  finally
+    RefreshDataSource;
+    FreeAndNil(LThread);
+  end;
 end;
 
 procedure TForm1.btnReloadClick(Sender: TObject);
@@ -73,6 +85,7 @@ end;
 
 procedure TForm1.btnRunClick(Sender: TObject);
 begin
+  // Aqui se crea el trigger utilizando la fabrica de triggers
   FTrigger := FFabricaTriggers.CrearTrigger('sincronizador');
   FTrigger.Ejecutar;
   RefreshDataSource;
@@ -86,6 +99,7 @@ var
   I: Integer;
 begin
   try
+    // Este es un boton de prueba.
     LFecha := Now;
 
     fdqryRegister.Connection.StartTransaction;
@@ -105,7 +119,6 @@ begin
       FThreadTable.SELECT_BY_NAME('ControlTelemetria');
     end;
     fdqryRegister.Connection.Commit;
-    ChangeStatus('E');
     RefreshDataSource;
     ShowMessage('APP 1 - Finished');
   except
@@ -143,8 +156,10 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  //FTelemetryDBConn := TTelemetryDBConn.Create;
+  //FTelemetryDBConn := TTelemetryDBConn.Create.GetInstance;
   //FTelemetryDBConn.Connect;
+
+  // Inicializa la tabla y la fabrica de triggers
   FThreadTable := TThreadTable.Create;
   FFabricaTriggers := TFabricaTriggers.Create;
 end;

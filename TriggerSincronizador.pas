@@ -5,17 +5,54 @@ uses System.SysUtils, System.DateUtils, Trigger, ThreadTable, Table, Thread,
 Vcl.Dialogs, ConnectionDB, TelemetryDBConn;
 
 type
+  /// <summary>
+  ///   Clase Trigger que lanzara la aplicacion del sincronizador, siempre
+  ///  y cuando se cumplan las condiciones para que pueda ejecutarse.
+  /// </summary>
   TTriggerSincronizador = class(TInterfacedObject, ITrigger)
   private
     FThread : TThread;
     FThreadTable : ITable;
     FConnection : IConnectionDB;
+    /// <summary>
+    ///   Crea el registro utilizando los metodos de la clase TThreadTable que
+    ///  implementa la interface Table
+    /// </summary>
     procedure CrearRegistro;
+    /// <summary>
+    ///   Actualiza el registro utilizando los metodos de la clase TThreadTable
+    /// </summary>
+    /// <param name="AStatus">
+    ///   Status del thread
+    /// </param>
+    /// <param name="AFecha">
+    ///   Fecha del thread yyyy-mm-dd
+    /// </param>
     procedure ActualizarRegistro(AStatus : String; AFecha : TDate);
+    /// <summary>
+    ///   Funcion que valida si se puede lanzar el sincronizador
+    /// </summary>
+    /// <returns>
+    ///     True si se puede lanzar el sincronizador.
+    ///     False si no se puede lanzar el sincronizador.
+    /// </returns>
     function ListoParaEjecutar : Boolean;
+    /// <summary>
+    ///   Funcion que valida si existe un registro o no.
+    /// </summary>
+    /// <returns>
+    ///     True si existe.
+    ///     False si no existe.
+    /// </returns>
     function ExisteRegistro : Boolean;
   public
+    /// <summary>
+    ///     Inicializa la instancia de la tabla TThreadTable
+    /// </summary>
     constructor Create;
+    /// <summary>
+    ///   Con este metodo el trigger ejecutara sus actividades
+    /// </summary>
     procedure Ejecutar;
 
   end;
@@ -71,7 +108,8 @@ procedure TTriggerSincronizador.ActualizarRegistro(AStatus: string; AFecha: TDat
 begin
   FThread := TThread.Create(AStatus, AFecha);
   try
-    FThreadTable.UPDATE(FThread);
+    //FThreadTable.UPDATE(FThread);
+    FThreadTable.UPDATE_LOCK(FThread);
   finally
     FreeAndNil(FThread);
   end;
@@ -92,6 +130,7 @@ var
   LCurrentDate: TDateTime;
 begin
   LCurrentDate := Now;
+  // Condiciones para decidir si se puede lanzar el sincronizador o no
    if (( IsToday(FThread.fecha)) and ((FThread.status = 'F') or (FThread.status = 'E')))
       OR ((not IsToday(FThread.fecha)) and (FThread.status = 'E'))
     then

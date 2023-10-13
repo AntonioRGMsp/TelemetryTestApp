@@ -1,0 +1,95 @@
+unit ThreadTable;
+
+interface
+uses Row, Table, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error,
+  FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB, FireDAC.Phys.FBDef,
+  FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
+  FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Thread,
+  Vcl.Dialogs, TelemetryDBConn, ConnectionDB, Unit1;
+
+type
+  TThreadTable = class (TInterfacedObject, ITable)
+    private
+      FQueryEditor : TFDQuery;
+      //Added
+      FDBConnection : TFDConnection;
+
+    public
+      //constructor Create(AQueryComponent : TFDQuery);
+      constructor Create;
+      procedure UPDATE(ARow: TThread);
+      procedure UPDATE_LOCK(ARow : TThread);
+      function SELECT_BY_NAME(AName : String) : TThread;
+      procedure INSERT(AThread : TThread);
+  end;
+
+
+implementation
+constructor TThreadTable.Create;
+begin
+  FDBConnection := connTelemetry;
+  FQueryEditor := TFDQuery.Create(nil);
+  FQueryEditor.ConnectionName := 'TestConn';
+  FQueryEditor.Connection := FDBConnection;
+end;
+
+procedure TThreadTable.UPDATE(ARow: TThread);
+begin
+  FQueryEditor.SQL.Text := 'UPDATE REGISTRY SET STATUS = :STATUS, FECHA = :FECHA WHERE ID = 1';
+  FQueryEditor.ParamByName('STATUS').ASString := ARow.status;
+  FQueryEditor.ParamByName('FECHA').AsDate := ARow.fecha;
+  FQueryEditor.ExecSQL;
+end;
+
+procedure TThreadTable.INSERT(AThread: TThread);
+var
+  LQuery : string;
+begin
+  LQuery := 'INSERT INTO REGISTRY (id, nombre, tipo, padre_id, fecha, status)';
+  LQuery := LQuery + 'VALUES (:ID, :NOMBRE, :TIPO,:PADRE_ID,:FECHA,:STATUS)';
+  FQueryEditor.SQL.Text := LQuery;
+  FQueryEditor.ParamByName('ID').AsInteger := AThread.id;
+  FQueryEditor.ParamByName('NOMBRE').AsString := AThread.nombre;
+  FQueryEditor.ParamByName('TIPO').ASString := AThread.tipo;
+  FQueryEditor.ParamByName('PADRE_ID').AsInteger := AThread.padreId;
+  FQueryEditor.ParamByName('FECHA').AsDate := AThread.fecha;
+  FQueryEditor.ParamByName('STATUS').AsString := AThread.status;
+  try
+    FQueryEditor.ExecSQL;
+  finally
+
+  end;
+
+end;
+
+procedure TThreadTable.UPDATE_LOCK(ARow: TThread);
+begin
+  try
+    FQueryEditor.Connection.StartTransaction;
+    FQueryEditor.SQL.Text := 'SELECT * FROM REGISTRY WHERE ID=1';
+    FQueryEditor.Open();
+    FQueryEditor.Connection.Commit;
+    ShowMessage('Lock successfully');
+  except
+  FQueryEditor.Connection.Rollback;
+    ShowMessage('Error on lock');
+  end;
+end;
+
+function TThreadTable.SELECT_BY_NAME(AName: string): TThread;
+var
+  LFecha : TDate;
+  LStatus : String;
+  LThread : TThread;
+begin
+  FQueryEditor.SQL.Text := 'SELECT * FROM REGISTRY WHERE NOMBRE = :NOMBRE';
+  FQueryEditor.ParamByName('NOMBRE').AsString := AName;
+  FQueryEditor.Open;
+  LFecha := FQueryEditor.FieldByName('FECHA').AsDateTime;
+  LStatus := FQueryEditor.FieldByName('STATUS').AsString;
+  LThread := TThread.Create(LStatus, LFecha);
+  Result := LThread;
+end;
+
+end.
