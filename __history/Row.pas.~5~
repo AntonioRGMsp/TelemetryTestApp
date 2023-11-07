@@ -4,8 +4,7 @@ interface
 type
   /// <summary>
   ///   Por el momento esta interface no se esta utilizando
-  ///
-  ///  solo demostracion
+  ///  Se deja esta interface como demostracion
   /// </summary>
   ///
   ///  Comentario extra
